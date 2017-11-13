@@ -2,6 +2,7 @@ package george.projects.demos.models;
 
 public class User {
 
+	private Long id;
 	private String username;
 	private String password;
 
@@ -10,6 +11,14 @@ public class User {
 	private String fullName;
 	private String firstName;
 	private String familyName;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getUsername() {
 		return username;

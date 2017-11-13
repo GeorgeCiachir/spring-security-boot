@@ -1,25 +1,38 @@
 package george.projects.demos.models;
 
-public enum Permission {
+public class Permission {
 
-	VIEW_PREMIUM_USERS_PAGE("permission for premium users", 1L),
-	VIEW_NORMAL_USERS_PAGE("permission for normal users", 2L),
-	VIEW_AND_MODIFY_SITE_PAGES("permission for site admin", 3L),
-	VIEW_APPLICATION_SPECIFICS("permission for ops", 4L);
+	private Long id;
+	private String name;
+	private String description;
 
-	private String permissionDescription;
-	private Long permissionCode;
-
-	Permission(String permissionDescription, Long permissionCode) {
-		this.permissionDescription = permissionDescription;
-		this.permissionCode = permissionCode;
+	public Long getId() {
+		return id;
 	}
 
-	public String getPermissionDescription() {
-		return permissionDescription;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Long getPermissionCode() {
-		return permissionCode;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
+
+
+//	VIEW_PREMIUM_USERS_PAGE("permission for premium users", 1L),
+//	VIEW_NORMAL_USERS_PAGE("permission for normal users", 2L),
+//	VIEW_AND_MODIFY_SITE_PAGES("permission for site admin", 3L),
+//	VIEW_APPLICATION_SPECIFICS("permission for ops", 4L);

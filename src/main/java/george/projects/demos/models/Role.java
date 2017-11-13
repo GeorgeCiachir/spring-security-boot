@@ -1,23 +1,32 @@
 package george.projects.demos.models;
 
-public enum Role {
+public class Role {
 
-	USER("role for users, normal or premium", 1L),
-	ADMIN("role for admins, site admins or ops", 2L);
+	private Long id;
+	private String name;
+	private String description;
 
-	private String permissionDescription;
-	private Long permissionCode;
-
-	Role(String permissionDescription, Long permissionCode) {
-		this.permissionDescription = permissionDescription;
-		this.permissionCode = permissionCode;
+	public Long getId() {
+		return id;
 	}
 
-	public String getPermissionDescription() {
-		return permissionDescription;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Long getPermissionCode() {
-		return permissionCode;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
