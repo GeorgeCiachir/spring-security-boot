@@ -14,8 +14,6 @@ public class ExternalServicesConfiguration {
 //	private static final String USERS_QUERY = "select * from user where username = ?";
 //	private static final String ROLES_QUERY = "SELECT role_id, role_name FROM (SELECT * FROM user RIGHT JOIN user_has_role ON user.user_id = user_has_role.user_user_id where username = ?) as T INNER JOIN role on role_role_id = role_id";
 
-
-
 	private static final String DRIVER_CLASS_NAME = "org.springframework.jdbc.datasource.DriverManagerDataSource";
 	private static final String URL = "jdbc:mysql://localhost:3306/application_security_db";
 	private static final String USERNAME = "root";
