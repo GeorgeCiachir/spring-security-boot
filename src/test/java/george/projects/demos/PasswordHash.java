@@ -15,7 +15,7 @@ public class PasswordHash extends TestCase {
 	}
 
 	public void testBCryptHash() {
-		String password = "parola";
+		String password = "password";
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String hashedPassword = encoder.encode(password);
 		System.out.println(hashedPassword);
