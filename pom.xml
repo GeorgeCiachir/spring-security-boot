@@ -92,10 +92,6 @@
 
 		<profile>
 			<id>STANDALONE_JETTY</id>
-			<!-- Set to true by default for convenience reasons -->
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<packaging.type>jar</packaging.type>
 			</properties>
@@ -122,10 +118,6 @@
 
 		<profile>
 			<id>CONTAINER_JETTY</id>
-			<!-- Set to true by default for convenience reasons -->
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<packaging.type>war</packaging.type>
 			</properties>
@@ -152,9 +144,6 @@
 		<profile>
 			<id>CONTAINER_TOMCAT</id>
 			<!-- No need for additional dependencies or exclusions as it is declared as default -->
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<packaging.type>war</packaging.type>
 			</properties>
@@ -182,6 +171,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>
