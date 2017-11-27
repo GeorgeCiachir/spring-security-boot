@@ -1,13 +1,20 @@
 package george.projects.demos.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@RequestMapping(value = "/appController")
+@RequestMapping(value = "/")
 @Controller
 public class ApplicationController {
+
+	@ResponseBody
+	@RequestMapping(value = "/description")
+	public String description() {
+		return "A small app that exemplifies the use of several spring security features";
+	}
 
 	@ResponseBody
 	@RequestMapping(value = "/login/{name}")
@@ -16,14 +23,27 @@ public class ApplicationController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/admin")
-	public String admin() {
-		return "Hello ! You must be an admin";
+	@RequestMapping(value = "/siteAdmin/{name}")
+	public String siteAdmin(@PathVariable(value = "name") String name) {
+		return "Hello " + name + "! You are an authenticated site admin";
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/testAuthentication")
-	public String testAuthentication() {
-		return "Hello ! You are authenticated";
+	@RequestMapping(value = "/opsAdmin/{name}")
+	public String opsAdmin(@PathVariable(value = "name") String name) {
+		return "Hello " + name + "! You are an authenticated ops admin";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/normalUser/{name}")
+	public String normalUser(@PathVariable(value = "name") String name) {
+		return "Hello " + name + " ! You are an authenticated normal user";
+	}
+
+	@PreAuthorize("hasRole('PREMIUM_USER')")
+	@ResponseBody
+	@RequestMapping(value = "/premiumUser/{name}")
+	public String premiumUser(@PathVariable(value = "name") String name) {
+		return "Hello " + name + " ! You are an authenticated premium user";
 	}
 }
