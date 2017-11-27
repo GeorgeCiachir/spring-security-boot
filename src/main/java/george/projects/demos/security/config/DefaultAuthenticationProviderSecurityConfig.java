@@ -1,4 +1,4 @@
-package george.projects.demos.security;
+package george.projects.demos.security.config;
 
 import javax.sql.DataSource;
 
@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import george.projects.demos.configuration.EnvironmentSettings;
 import george.projects.demos.configuration.SecurityProfile;
@@ -30,7 +29,6 @@ public class DefaultAuthenticationProviderSecurityConfig extends WebSecurityConf
 
 	private EnvironmentSettings environmentSettings;
 	private DataSource dataSource;
-	private BCryptPasswordEncoder passwordEncoder;
 
 	public DefaultAuthenticationProviderSecurityConfig() {
 		LOG.info("Global security configuration with the DEFAULT authentication provider");
@@ -42,8 +40,9 @@ public class DefaultAuthenticationProviderSecurityConfig extends WebSecurityConf
 				.jdbcAuthentication()
 				.dataSource(dataSource)
 				.usersByUsernameQuery(USERS_QUERY)
-				.authoritiesByUsernameQuery(ROLES_QUERY)
-				.passwordEncoder(passwordEncoder);
+				.authoritiesByUsernameQuery(ROLES_QUERY);
+		//Note: could use a password encoder but this would mean to hash th password here
+		//and let it visible when it comes from outside. Not a good idea 
 	}
 
 	@Override
@@ -65,10 +64,5 @@ public class DefaultAuthenticationProviderSecurityConfig extends WebSecurityConf
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
-	}
-
-	@Autowired
-	public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
-		this.passwordEncoder = passwordEncoder;
 	}
 }
