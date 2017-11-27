@@ -1,6 +1,5 @@
 package george.projects.demos.security;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -13,7 +12,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import george.projects.demos.configuration.EnvironmentSettings;
 import george.projects.demos.configuration.SecurityProfile;
 
 @Profile(SecurityProfile.DEFAULT_AUTH_PROVIDER)
@@ -27,20 +28,22 @@ public class DefaultAuthenticationProviderSecurityConfig extends WebSecurityConf
 	private static final String USERS_QUERY = "select username, password, enabled from user where username = ?";
 	private static final String ROLES_QUERY = "SELECT role_id, role_name FROM (SELECT * FROM user RIGHT JOIN user_has_role ON user.user_id = user_has_role.user_user_id where username = ?) as T INNER JOIN role on role_role_id = role_id";
 
-	@Resource
+	private EnvironmentSettings environmentSettings;
 	private DataSource dataSource;
+	private BCryptPasswordEncoder passwordEncoder;
 
 	public DefaultAuthenticationProviderSecurityConfig() {
 		LOG.info("Global security configuration with the DEFAULT authentication provider");
 	}
 
 	@Autowired
-	public void configureGlobal(final AuthenticationManagerBuilder authManagerBuilder) throws Exception {
+	public void configureGlobal(AuthenticationManagerBuilder authManagerBuilder) throws Exception {
 		authManagerBuilder
 				.jdbcAuthentication()
 				.dataSource(dataSource)
 				.usersByUsernameQuery(USERS_QUERY)
-				.authoritiesByUsernameQuery(ROLES_QUERY);
+				.authoritiesByUsernameQuery(ROLES_QUERY)
+				.passwordEncoder(passwordEncoder);
 	}
 
 	@Override
@@ -49,6 +52,23 @@ public class DefaultAuthenticationProviderSecurityConfig extends WebSecurityConf
 				.httpBasic()
 				.and()
 				.authorizeRequests()
+				.antMatchers(environmentSettings.allowedUrlPatterns()).permitAll()
+				.antMatchers("/siteAdmin/**").hasRole("ADMIN_SITE")
 				.anyRequest().authenticated();
+	}
+
+	@Autowired
+	public void setEnvironmentSettings(EnvironmentSettings environmentSettings) {
+		this.environmentSettings = environmentSettings;
+	}
+
+	@Autowired
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
+	@Autowired
+	public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
 	}
 }
