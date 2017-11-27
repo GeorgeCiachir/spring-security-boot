@@ -6,7 +6,8 @@
 	<groupId>george.projects.demos</groupId>
 	<artifactId>spring-security-boot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<!-- It selects the packaging type depending on the selected maven profile -->
+	<packaging>${packaging.type}</packaging>
 
 	<name>spring-security-boot</name>
 	<description>A small app that exemplifies the use of several spring security features</description>
@@ -22,18 +23,23 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<start-class>george.projects.demos.SpringSecurityBootApplication</start-class>
 	</properties>
 
 	<dependencies>
-		<!-- SpringBoot with default embedded container -->
+		<!-- SpringBoot -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<!-- The default embedded container -->
+		<!-- Elected to be provided - this means that a maven profile must be specified -->
+		<!-- Another way to do this would have been to exclude the Tomcat dependency from the spring-boot-starter-web -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- OPS -->
@@ -46,7 +52,7 @@
 			<artifactId>spring-boot-actuator-docs</artifactId>
 		</dependency>
 
-		<!-- Security -->
+		<!-- Security and session management-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -56,7 +62,7 @@
 			<artifactId>spring-session</artifactId>
 		</dependency>
 
-		<!-- DB connection -->
+		<!-- DB -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -68,7 +74,7 @@
 			<version>4.3.8.RELEASE</version>
 		</dependency>
 
-		<!-- Used for reading with @ConfigurationProperties from application properties -->
+		<!-- Used for reading with @ConfigurationProperties from application.properties file -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
@@ -89,18 +95,32 @@
 	</dependencies>
 
 	<profiles>
+		<profile>
+			<id>STANDALONE_TOMCAT</id>
+			<properties>
+				<packaging.type>jar</packaging.type>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+					<!-- Just for clarity. No actual need to provide the scope as it defaults to compile -->
+					<!-- Actually, it could/should have been runtime -->
+					<scope>compile</scope>
+				</dependency>
+			</dependencies>
+		</profile>
 
 		<profile>
 			<id>STANDALONE_JETTY</id>
 			<properties>
 				<packaging.type>jar</packaging.type>
 			</properties>
-
 			<dependencies>
 				<dependency>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-web</artifactId>
-					<!-- Must exclude as it is the default servlet container -->
+					<!-- No actual need to exclude the dependency, other than thinning the jar -->
 					<exclusions>
 						<exclusion>
 							<groupId>org.springframework.boot</groupId>
@@ -111,55 +131,11 @@
 				<dependency>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-jetty</artifactId>
+					<!-- Just for clarity. No actual need to provide the scope as it defaults to compile -->
+					<!-- Actually, it could/should have been runtime -->
 					<scope>compile</scope>
 				</dependency>
 			</dependencies>
-		</profile>
-
-		<profile>
-			<id>CONTAINER_JETTY</id>
-			<properties>
-				<packaging.type>war</packaging.type>
-			</properties>
-
-			<dependencies>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-web</artifactId>
-					<exclusions>
-						<exclusion>
-							<groupId>org.springframework.boot</groupId>
-							<artifactId>spring-boot-starter-tomcat</artifactId>
-						</exclusion>
-					</exclusions>
-				</dependency>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-jetty</artifactId>
-					<scope>compile</scope>
-				</dependency>
-			</dependencies>
-		</profile>
-
-		<profile>
-			<id>CONTAINER_TOMCAT</id>
-			<!-- No need for additional dependencies or exclusions as it is declared as default -->
-			<properties>
-				<packaging.type>war</packaging.type>
-			</properties>
-			<dependencies>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-web</artifactId>
-					<exclusions>
-						<exclusion>
-							<groupId>org.springframework.boot</groupId>
-							<artifactId>spring-boot-starter-tomcat</artifactId>
-						</exclusion>
-					</exclusions>
-				</dependency>
-			</dependencies>
-
 		</profile>
 	</profiles>
 
@@ -168,6 +144,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>${start-class}</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
