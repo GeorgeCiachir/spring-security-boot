@@ -54,4 +54,8 @@ public class EnvironmentSettings {
 	public void setRedirectToUrlAfterLogout(String redirectToUrlAfterLogout) {
 		this.redirectToUrlAfterLogout = redirectToUrlAfterLogout;
 	}
+
+	public String[] allowedUrlPatterns() {
+		return unrestrictedUrls.toArray(new String[unrestrictedUrls.size()]);
+	}
 }
