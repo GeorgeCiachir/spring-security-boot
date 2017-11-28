@@ -1,6 +1,6 @@
 package george.projects.demos.model;
 
-import java.util.List;
+import java.util.Set;
 
 public class User {
 
@@ -9,7 +9,7 @@ public class User {
 	private String email;
 	private String password;
 	private Boolean enabled;
-	private List<Role> roles;
+	private Set<Role> roles;
 
 	public Long getId() {
 		return id;
@@ -51,11 +51,11 @@ public class User {
 		this.enabled = enabled;
 	}
 
-	public List<Role> getRoles() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 }
