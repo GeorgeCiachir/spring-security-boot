@@ -1,6 +1,5 @@
-package george.projects.demos.security;
+package george.projects.demos.security.config;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -15,8 +14,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import george.projects.demos.configuration.SecurityProfile;
+import george.projects.demos.security.authentication.CustomAuthenticationProvider;
 
 @Profile(SecurityProfile.CUSTOM_AUTH_PROVIDER)
+//@Order(SecurityProperties.BASIC_AUTH_ORDER - 10)
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -24,31 +25,33 @@ public class CustomAuthenticationProviderSecurityConfig extends WebSecurityConfi
 
 	private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationProviderSecurityConfig.class);
 
-	private static final String USERS_QUERY = "select username, password, enabled from user where username = ?";
-	private static final String ROLES_QUERY = "SELECT role_id, role_name FROM (SELECT * FROM user RIGHT JOIN user_has_role ON user.user_id = user_has_role.user_user_id where username = ?) as T INNER JOIN role on role_role_id = role_id";
-
-	@Resource
+	private CustomAuthenticationProvider authenticationProvider;
 	private DataSource dataSource;
 
 	public CustomAuthenticationProviderSecurityConfig() {
-		LOG.info("Global security configuration with the CUSTOM authentication provider");
+		LOG.info("Global security configuration with CUSTOM AUTHENTICATION PROVIDER");
 	}
 
 	@Autowired
-	public void configureGlobal(final AuthenticationManagerBuilder authManagerBuilder) throws Exception {
+	public void configureGlobal(AuthenticationManagerBuilder authManagerBuilder) throws Exception {
 		authManagerBuilder
-				.jdbcAuthentication()
-				.dataSource(dataSource)
-				.usersByUsernameQuery(USERS_QUERY)
-				.authoritiesByUsernameQuery(ROLES_QUERY);
+				.authenticationProvider(authenticationProvider);
 	}
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
-				.httpBasic()
-				.and()
 				.authorizeRequests()
 				.anyRequest().authenticated();
+	}
+
+	@Autowired
+	public void setAuthenticationProvider(CustomAuthenticationProvider authenticationProvider) {
+		this.authenticationProvider = authenticationProvider;
+	}
+
+	@Autowired
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 }

@@ -1,8 +1,8 @@
 package george.projects.demos.security.authentication;
 
-/**
- * Created by gciachirarhire on 11/27/2017.
- */
+import org.springframework.stereotype.Service;
+
+@Service
 public class MySqlRetrievalService {
 
 }
