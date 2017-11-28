@@ -39,9 +39,9 @@ DROP TABLE IF EXISTS `application_security_db`.`role` ;
 
 CREATE TABLE IF NOT EXISTS `application_security_db`.`role` (
   `role_id` INT NOT NULL AUTO_INCREMENT,
-  `userName` VARCHAR(45) NULL,
+  `role_name` VARCHAR(45) NULL,
   PRIMARY KEY (`role_id`),
-  UNIQUE INDEX `role_name_UNIQUE` (`userName` ASC))
+  UNIQUE INDEX `role_role_name_UNIQUE` (`role_name` ASC))
   ENGINE = InnoDB;
 
 
@@ -52,9 +52,9 @@ DROP TABLE IF EXISTS `application_security_db`.`permission` ;
 
 CREATE TABLE IF NOT EXISTS `application_security_db`.`permission` (
   `permission_id` INT NOT NULL AUTO_INCREMENT,
-  `userName` VARCHAR(45) NULL,
+  `name` VARCHAR(45) NULL,
   PRIMARY KEY (`permission_id`),
-  UNIQUE INDEX `prmission_name_UNIQUE` (`userName` ASC))
+  UNIQUE INDEX `prmission_name_UNIQUE` (`name` ASC))
   ENGINE = InnoDB;
 
 
@@ -111,10 +111,10 @@ INSERT INTO `application_security_db`.`user` (`username`, `email`, `password`, `
 INSERT INTO `application_security_db`.`user` (`username`, `email`, `password`, `enabled`) VALUES ('Mihai@company.com', 'Mihai@company.com', '$2a$10$mxFO2xJN4xYTDR5D176Pd.huyp6nybiMdPQAd2XSxyDEf/8ennr4q',  '1');
 
 
-INSERT INTO `application_security_db`.`role` (`userName`) VALUES ('ADMIN_SITE');
-INSERT INTO `application_security_db`.`role` (`userName`) VALUES ('ADMIN_OPS');
-INSERT INTO `application_security_db`.`role` (`userName`) VALUES ('SIMPLE_USER');
-INSERT INTO `application_security_db`.`role` (`userName`) VALUES ('PREMIUM_USER');
+INSERT INTO `application_security_db`.`role` (`role_name`) VALUES ('ROLE_ADMIN_SITE');
+INSERT INTO `application_security_db`.`role` (`role_name`) VALUES ('ROLE_ADMIN_OPS');
+INSERT INTO `application_security_db`.`role` (`role_name`) VALUES ('ROLE_SIMPLE_USER');
+INSERT INTO `application_security_db`.`role` (`role_name`) VALUES ('ROLE_PREMIUM_USER');
 
 INSERT INTO `application_security_db`.`user_has_role` (`user_user_id`, `role_role_id`) VALUES ('1', '1');
 INSERT INTO `application_security_db`.`user_has_role` (`user_user_id`, `role_role_id`) VALUES ('1', '2');
