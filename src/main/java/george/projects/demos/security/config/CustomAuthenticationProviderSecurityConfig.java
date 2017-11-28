@@ -17,7 +17,6 @@ import george.projects.demos.configuration.SecurityProfile;
 import george.projects.demos.security.authentication.CustomAuthenticationProvider;
 
 @Profile(SecurityProfile.CUSTOM_AUTH_PROVIDER)
-//@Order(SecurityProperties.BASIC_AUTH_ORDER - 10)
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
