@@ -2,13 +2,9 @@ package george.projects.demos.security.authentication;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import george.projects.demos.model.Role;
 
 public class UserInfo implements UserDetails {
 
@@ -20,11 +16,13 @@ public class UserInfo implements UserDetails {
 	private boolean credentialsNonExpired;
 	private boolean enabled;
 
-	UserInfo(String username, String password, Set<Role> roles) {
+	public UserInfo(String username, String password, Set<GrantedAuthority> authorities) {
 		this.username = username;
 		this.password = password;
-		this.authorities.addAll(roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet()));
+		this.authorities.addAll(authorities);
 	}
+
+	UserInfo(){}
 
 	@Override
 	public final String getUsername() {
@@ -60,5 +58,69 @@ public class UserInfo implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setAuthorities(Set<GrantedAuthority> authorities) {
+		this.authorities = authorities;
+	}
+
+	public void setAccountNonExpired(boolean accountNonExpired) {
+		this.accountNonExpired = accountNonExpired;
+	}
+
+	public void setAccountNonLocked(boolean accountNonLocked) {
+		this.accountNonLocked = accountNonLocked;
+	}
+
+	public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+		this.credentialsNonExpired = credentialsNonExpired;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public static UserInfoBuilder builder() {
+		return UserInfoBuilder.getInstance();
+	}
+
+	public static class UserInfoBuilder {
+
+		private static UserInfo userInfo;
+
+		private UserInfoBuilder(){
+			userInfo = new UserInfo();
+		}
+
+		static UserInfoBuilder getInstance() {
+			return new UserInfoBuilder();
+		}
+
+		public UserInfoBuilder withUsername(String username) {
+			userInfo.setUsername(username);
+			return this;
+		}
+
+		public UserInfoBuilder withPassword(String password) {
+			userInfo.setPassword(password);
+			return this;
+		}
+
+		public UserInfoBuilder withAuthorities(Set<GrantedAuthority> authorities) {
+			userInfo.setAuthorities(authorities);
+			return this;
+		}
+
+		public UserInfo build() {
+			return userInfo;
+		}
 	}
 }
