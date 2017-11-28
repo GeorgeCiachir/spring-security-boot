@@ -31,7 +31,7 @@ public class DefaultAuthenticationProviderSecurityConfig extends WebSecurityConf
 	private DataSource dataSource;
 
 	public DefaultAuthenticationProviderSecurityConfig() {
-		LOG.info("Global security configuration with the DEFAULT authentication provider");
+		LOG.info("Global security configuration with the DEFAULT AUTHENTICATION PROVIDER");
 	}
 
 	@Autowired
@@ -42,7 +42,7 @@ public class DefaultAuthenticationProviderSecurityConfig extends WebSecurityConf
 				.usersByUsernameQuery(USERS_QUERY)
 				.authoritiesByUsernameQuery(ROLES_QUERY);
 		//Note: could use a password encoder but this would mean to hash th password here
-		//and let it visible when it comes from outside. Not a good idea 
+		//and let it visible when it comes from outside. Not a good idea
 	}
 
 	@Override
