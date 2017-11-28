@@ -1,7 +1,5 @@
 package george.projects.demos.security.config;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import george.projects.demos.configuration.EnvironmentSettings;
 import george.projects.demos.configuration.SecurityProfile;
 import george.projects.demos.security.authentication.CustomAuthenticationProvider;
 
@@ -25,7 +24,7 @@ public class CustomAuthenticationProviderSecurityConfig extends WebSecurityConfi
 	private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationProviderSecurityConfig.class);
 
 	private CustomAuthenticationProvider authenticationProvider;
-	private DataSource dataSource;
+	private EnvironmentSettings environmentSettings;
 
 	public CustomAuthenticationProviderSecurityConfig() {
 		LOG.info("Global security configuration with CUSTOM AUTHENTICATION PROVIDER");
@@ -41,7 +40,11 @@ public class CustomAuthenticationProviderSecurityConfig extends WebSecurityConfi
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
 				.authorizeRequests()
-				.anyRequest().authenticated();
+				.antMatchers(environmentSettings.allowedUrlPatterns()).permitAll()
+				.antMatchers("/siteAdmin/**").hasRole("ADMIN_SITE")
+				.anyRequest().authenticated()
+				.and()
+				.httpBasic();
 	}
 
 	@Autowired
@@ -50,7 +53,7 @@ public class CustomAuthenticationProviderSecurityConfig extends WebSecurityConfi
 	}
 
 	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
+	public void setEnvironmentSettings(EnvironmentSettings environmentSettings) {
+		this.environmentSettings = environmentSettings;
 	}
 }
