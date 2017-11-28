@@ -1,36 +1,25 @@
 package george.projects.demos.security.authentication;
 
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import george.projects.demos.dao.RoleDao;
-import george.projects.demos.dao.UserDao;
-import george.projects.demos.model.User;
+import george.projects.demos.security.service.MySqlUserDetailsService;
 
 @Service
 public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
 
-	@Resource
-	private MySqlRetrievalService retrievalService;
-
-	@Resource
-	private UserDao userDao;
-
-	@Resource
-	private RoleDao roleDao;
+	private MySqlUserDetailsService retrievalService;
 
 	@Override
 	public boolean supports(Class<?> authentication) {
@@ -41,13 +30,7 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 	public Authentication authenticate(Authentication authentication) {
 		String username = authentication.getName();
 
-		UserDetails user;
-		try {
-			user = retrieveUser(username, (UsernamePasswordAuthenticationToken) authentication);
-		} catch (UsernameNotFoundException e) {
-			LOG.info("User not found", e);
-			throw e;
-		}
+		UserDetails user = retrieveUser(username, (UsernamePasswordAuthenticationToken) authentication);
 
 		Assert.notNull(user, "retrieveUser returned null - a violation of the interface contract");
 
@@ -63,14 +46,12 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 	}
 
 	@Override
-	protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-		User user = userDao.findByUsername(username);
-		user.setRoles(roleDao.findUserRoles(username));
-		return new UserInfo(user.getUserName(), user.getPassword(), user.getRoles());
+	protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) {
+		return retrievalService.loadUserByUsername(username);
 	}
 
 	@Override
-	protected void additionalAuthenticationChecks(final UserDetails userDetails, final UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) {
 		if (authentication.getCredentials() == null) {
 			LOG.info("Authentication failed; no credentials provided");
 			throw new BadCredentialsException("Authentication failed; no credentials provided");
@@ -91,5 +72,10 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 		authenticationToken.setDetails(authentication.getDetails());
 
 		return authenticationToken;
+	}
+
+	@Autowired
+	public void setRetrievalService(MySqlUserDetailsService retrievalService) {
+		this.retrievalService = retrievalService;
 	}
 }
