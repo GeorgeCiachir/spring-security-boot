@@ -7,7 +7,7 @@
 	<artifactId>spring-security-boot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<!-- It selects the packaging type depending on the selected maven profile -->
-	<packaging>${packaging.type}</packaging>
+	<packaging>war</packaging>
 
 	<name>spring-security-boot</name>
 	<description>A small app that exemplifies the use of several spring security features</description>
@@ -66,12 +66,13 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 			<version>4.3.8.RELEASE</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<!-- Used for reading with @ConfigurationProperties from application.properties file -->
@@ -112,6 +113,22 @@
 		</profile>
 
 		<profile>
+			<id>CONTAINER_TOMCAT</id>
+			<properties>
+				<packaging.type>war</packaging.type>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+					<!-- Just for clarity. No actual need to provide the scope as it defaults to compile -->
+					<!-- Actually, it could/should have been runtime -->
+					<scope>compile</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+
+		<profile>
 			<id>STANDALONE_JETTY</id>
 			<properties>
 				<packaging.type>jar</packaging.type>
@@ -137,6 +154,34 @@
 				</dependency>
 			</dependencies>
 		</profile>
+
+		<profile>
+			<id>CONTAINER_JETTY</id>
+			<properties>
+				<packaging.type>war</packaging.type>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-web</artifactId>
+					<!-- No actual need to exclude the dependency, other than thinning the jar -->
+					<exclusions>
+						<exclusion>
+							<groupId>org.springframework.boot</groupId>
+							<artifactId>spring-boot-starter-tomcat</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-jetty</artifactId>
+					<!-- Just for clarity. No actual need to provide the scope as it defaults to compile -->
+					<!-- Actually, it could/should have been runtime -->
+					<scope>compile</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+
 	</profiles>
 
 	<build>
@@ -146,6 +191,12 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<mainClass>${start-class}</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
 		</plugins>
