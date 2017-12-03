@@ -12,10 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import george.projects.demos.configuration.EnvironmentSettings;
-import george.projects.demos.configuration.SecurityProfile;
+import george.projects.demos.configuration.ApplicationSecurityProfile;
 import george.projects.demos.security.filter.CustomFilter;
 
-@Profile(SecurityProfile.CUSTOM_FILTER)
+@Profile(ApplicationSecurityProfile.CUSTOM_SECURITY_FILTER)
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -24,23 +24,36 @@ public class CustomFilterSecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final Logger LOG = LoggerFactory.getLogger(CustomFilterSecurityConfig.class);
 
 	private EnvironmentSettings environmentSettings;
+	private CustomFilter customFilter;
 
 	public CustomFilterSecurityConfig() {
-		LOG.info("Global security configuration with the CUSTOM FILTER");
+		LOG.info("Global security configuration with the {}", ApplicationSecurityProfile.CUSTOM_SECURITY_FILTER);
 	}
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
-				.addFilterAfter(new CustomFilter(), BasicAuthenticationFilter.class)
+				.addFilterBefore(customFilter, BasicAuthenticationFilter.class)
 				.authorizeRequests()
 				.antMatchers(environmentSettings.allowedUrlPatterns()).permitAll()
 				.antMatchers("/siteAdmin/**").hasRole("ADMIN_SITE")
+				.antMatchers("/opsAdmin/**").access("hasRole('ADMIN_OPS') and authentication.principal.equals('George@company.com')")
 				.anyRequest().authenticated();
+
+		httpSecurity
+				.formLogin()
+					.loginPage("/login")
+				.permitAll();
+
 	}
 
 	@Autowired
 	public void setEnvironmentSettings(EnvironmentSettings environmentSettings) {
 		this.environmentSettings = environmentSettings;
+	}
+
+	@Autowired
+	public void setCustomFilter(CustomFilter customFilter) {
+		this.customFilter = customFilter;
 	}
 }
