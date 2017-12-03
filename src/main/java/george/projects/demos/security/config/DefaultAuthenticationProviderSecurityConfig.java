@@ -14,9 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import george.projects.demos.configuration.EnvironmentSettings;
-import george.projects.demos.configuration.SecurityProfile;
+import george.projects.demos.configuration.ApplicationSecurityProfile;
 
-@Profile(SecurityProfile.DEFAULT_AUTH_PROVIDER)
+@Profile(ApplicationSecurityProfile.DEFAULT_AUTH_PROVIDER)
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -31,7 +31,7 @@ public class DefaultAuthenticationProviderSecurityConfig extends WebSecurityConf
 	private DataSource dataSource;
 
 	public DefaultAuthenticationProviderSecurityConfig() {
-		LOG.info("Global security configuration with the DEFAULT AUTHENTICATION PROVIDER");
+		LOG.info("Global security configuration with the {}", ApplicationSecurityProfile.DEFAULT_AUTH_PROVIDER);
 	}
 
 	@Autowired

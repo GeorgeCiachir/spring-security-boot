@@ -1,7 +1,7 @@
 package george.projects.demos.configuration;
 
 
-public class SecurityProfile {
+public class ApplicationSecurityProfile {
 
 	public static final String DEFAULT_AUTH_PROVIDER = "DEFAULT_AUTH_PROVIDER";
 	public static final String CUSTOM_AUTH_PROVIDER = "CUSTOM_AUTH_PROVIDER";

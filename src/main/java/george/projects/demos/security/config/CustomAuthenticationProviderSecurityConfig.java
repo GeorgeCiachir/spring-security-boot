@@ -12,10 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import george.projects.demos.configuration.EnvironmentSettings;
-import george.projects.demos.configuration.SecurityProfile;
+import george.projects.demos.configuration.ApplicationSecurityProfile;
 import george.projects.demos.security.authentication.CustomAuthenticationProvider;
 
-@Profile(SecurityProfile.CUSTOM_AUTH_PROVIDER)
+@Profile(ApplicationSecurityProfile.CUSTOM_AUTH_PROVIDER)
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -27,7 +27,7 @@ public class CustomAuthenticationProviderSecurityConfig extends WebSecurityConfi
 	private EnvironmentSettings environmentSettings;
 
 	public CustomAuthenticationProviderSecurityConfig() {
-		LOG.info("Global security configuration with CUSTOM AUTHENTICATION PROVIDER");
+		LOG.info("Global security configuration with the {}", ApplicationSecurityProfile.CUSTOM_AUTH_PROVIDER);
 	}
 
 	@Autowired
