@@ -39,12 +39,6 @@ public class CustomFilterSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/siteAdmin/**").hasRole("ADMIN_SITE")
 				.antMatchers("/opsAdmin/**").access("hasRole('ADMIN_OPS') and authentication.principal.equals('George@company.com')")
 				.anyRequest().authenticated();
-
-		httpSecurity
-				.formLogin()
-					.loginPage("/login")
-				.permitAll();
-
 	}
 
 	@Autowired

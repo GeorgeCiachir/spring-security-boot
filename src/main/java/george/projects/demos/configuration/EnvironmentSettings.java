@@ -9,19 +9,10 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "application.security")
 public class EnvironmentSettings {
 
-	private String authentication;
 	private List<String> unrestrictedUrls;
 	private String loginUrl;
 	private String logoutUrl;
 	private String redirectToUrlAfterLogout;
-
-	public String getAuthentication() {
-		return authentication;
-	}
-
-	public void setAuthentication(String authentication) {
-		this.authentication = authentication;
-	}
 
 	public List<String> getUnrestrictedUrls() {
 		return unrestrictedUrls;
