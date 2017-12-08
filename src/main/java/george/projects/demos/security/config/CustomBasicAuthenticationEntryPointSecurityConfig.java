@@ -49,7 +49,7 @@ public class CustomBasicAuthenticationEntryPointSecurityConfig extends WebSecuri
 
 				.and().addFilter(basicAuthenticationFilter(super.authenticationManagerBean()));
 
-		//FIXME: need to fix this so that it actually works
+		//FIXME: Need to fix this so that it actually works
 //		httpSecurity.formLogin().loginPage("/login").permitAll();
 	}
 
