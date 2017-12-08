@@ -20,9 +20,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import george.projects.demos.security.authentication.CustomAuthenticationProvider;
 
 @Component
-public class CustomFilter extends OncePerRequestFilter {
+public class CustomSecurityFilter extends OncePerRequestFilter {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CustomFilter.class);
+	private static final Logger LOG = LoggerFactory.getLogger(CustomSecurityFilter.class);
 
 	private CustomAuthenticationProvider authenticationProvider;
 

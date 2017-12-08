@@ -10,10 +10,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 
 import george.projects.demos.configuration.EnvironmentSettings;
 import george.projects.demos.configuration.ApplicationSecurityProfile;
 import george.projects.demos.security.authentication.CustomAuthenticationProvider;
+import george.projects.demos.security.service.MySqlUserDetailsService;
 
 @Profile(ApplicationSecurityProfile.CUSTOM_AUTH_PROVIDER)
 @Configuration
@@ -30,6 +32,12 @@ public class CustomAuthenticationProviderSecurityConfig extends WebSecurityConfi
 		LOG.info("Global security configuration with the {}", ApplicationSecurityProfile.CUSTOM_AUTH_PROVIDER);
 	}
 
+	/**
+	 * Set the {@link CustomAuthenticationProvider} as a global authentication provider that
+	 * uses the custom {@link MySqlUserDetailsService} that maps to the provided SQL schema
+	 *
+	 * If not, it will default will be {@link DaoAuthenticationProvider} and auth will fail
+	 */
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder authManagerBuilder) throws Exception {
 		authManagerBuilder

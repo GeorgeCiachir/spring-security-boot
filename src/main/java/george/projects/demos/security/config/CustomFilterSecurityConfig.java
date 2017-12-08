@@ -13,8 +13,13 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import george.projects.demos.configuration.EnvironmentSettings;
 import george.projects.demos.configuration.ApplicationSecurityProfile;
-import george.projects.demos.security.filter.CustomFilter;
+import george.projects.demos.security.authentication.CustomAuthenticationProvider;
+import george.projects.demos.security.filter.CustomSecurityFilter;
 
+/**
+ * No need to do set a custom authentication provider, because in the {@link this#configure(HttpSecurity)} method
+ * a new security filter is provided, that uses the {@link CustomAuthenticationProvider}
+ */
 @Profile(ApplicationSecurityProfile.CUSTOM_SECURITY_FILTER)
 @Configuration
 @EnableWebSecurity
@@ -24,7 +29,7 @@ public class CustomFilterSecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final Logger LOG = LoggerFactory.getLogger(CustomFilterSecurityConfig.class);
 
 	private EnvironmentSettings environmentSettings;
-	private CustomFilter customFilter;
+	private CustomSecurityFilter customSecurityFilter;
 
 	public CustomFilterSecurityConfig() {
 		LOG.info("Global security configuration with the {}", ApplicationSecurityProfile.CUSTOM_SECURITY_FILTER);
@@ -33,7 +38,7 @@ public class CustomFilterSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
-				.addFilterBefore(customFilter, BasicAuthenticationFilter.class)
+				.addFilterBefore(customSecurityFilter, BasicAuthenticationFilter.class)
 				.authorizeRequests()
 				.antMatchers(environmentSettings.allowedUrlPatterns()).permitAll()
 				.antMatchers("/siteAdmin/**").hasRole("ADMIN_SITE")
@@ -47,7 +52,7 @@ public class CustomFilterSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Autowired
-	public void setCustomFilter(CustomFilter customFilter) {
-		this.customFilter = customFilter;
+	public void setCustomSecurityFilter(CustomSecurityFilter customSecurityFilter) {
+		this.customSecurityFilter = customSecurityFilter;
 	}
 }

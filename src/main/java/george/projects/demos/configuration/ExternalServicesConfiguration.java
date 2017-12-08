@@ -21,7 +21,7 @@ public class ExternalServicesConfiguration {
 		return new JdbcTemplate(dataSource);
 	}
 
-	//TODO: Find a better solution for the Tomcat container for the jdbc driver (at the moment it works when using one of the commented lines below)
+	//FIXME: Find a better solution for the Tomcat container for the jdbc driver (at the moment it works when using one of the commented lines below)
 	@Bean
 	public DataSource dataSource() throws ClassNotFoundException {
 //		Class.forName("com.mysql.jdbc.Driver");
