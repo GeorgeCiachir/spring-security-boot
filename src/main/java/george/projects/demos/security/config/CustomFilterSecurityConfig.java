@@ -41,9 +41,15 @@ public class CustomFilterSecurityConfig extends WebSecurityConfigurerAdapter {
 				.addFilterBefore(customSecurityFilter, BasicAuthenticationFilter.class)
 				.authorizeRequests()
 				.antMatchers(environmentSettings.allowedUrlPatterns()).permitAll()
+
 				.antMatchers("/siteAdmin/**").hasRole("ADMIN_SITE")
 				.antMatchers("/opsAdmin/**").access("hasRole('ADMIN_OPS') and authentication.principal.equals('George@company.com')")
-				.anyRequest().authenticated();
+
+				.anyRequest().authenticated()
+
+				.and()
+				.formLogin()
+				.loginPage(environmentSettings.getLoginUrl());
 	}
 
 	@Autowired
