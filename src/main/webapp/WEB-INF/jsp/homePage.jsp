@@ -3,16 +3,9 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Access Denied</title>
+    <title>Home</title>
 </head>
 <body>
-<div style="color:red;margin-top:100px;font-weight: bold;">
-    You are not authorized to view this page.
-</div>
-<div style="color:green;margin-top:50px;font-weight: bold;">
-    Click here to go to the home page -
-
-    <a href="${pageContext.request.contextPath}/home">Home</a>
-</div>
+    <h2>This is the application's home Page</h2>
 </body>
 </html>

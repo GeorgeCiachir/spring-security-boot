@@ -1,10 +1,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <head>
-    <title>Login</title>
+    <title>Spring login</title>
 </head>
 <body>
-<p> Please Login</p>
+<p>This will go through Spring security controller - Please Login</p>
 <c:url value="/login" var="loginUrl"/>
 <form:form name="form" action="${loginUrl}" method="post">
     <c:if test="${param.error != null}">
@@ -20,7 +20,7 @@
             <td><input type="password" id="password" name="password"/></td>
         </tr>
         <tr>
-            <td><input type="submit" value="log In"/></td>
+            <td><input type="submit" value="Login"/></td>
         </tr>
     </table>
 </form:form>

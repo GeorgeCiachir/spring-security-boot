@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @RequestMapping(value = "/")
 @Controller
@@ -24,8 +25,9 @@ public class ApplicationController {
 
 	@ResponseBody
 	@RequestMapping(value = "/opsAdmin")
-	public String opsAdmin(@RequestParam(value = "name", required = false, defaultValue = "user") String name) {
-		return "Hello " + name + "! You are an authenticated ops admin";
+	public ModelAndView opsAdmin(@RequestParam(value = "name", required = false, defaultValue = "user") String name) {
+		return new ModelAndView("opsAdminPage");
+//		return "Hello " + name + "! You are an authenticated ops admin";
 	}
 
 	@ResponseBody
@@ -39,5 +41,11 @@ public class ApplicationController {
 	@RequestMapping(value = "/premiumUser")
 	public String premiumUser(@RequestParam(value = "name", required = false, defaultValue = "user") String name) {
 		return "Hello " + name + " ! You are an authenticated premium user";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/home")
+	public ModelAndView home() {
+		return new ModelAndView("homePage");
 	}
 }

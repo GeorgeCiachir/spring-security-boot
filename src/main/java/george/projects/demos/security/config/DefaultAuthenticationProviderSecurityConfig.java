@@ -41,7 +41,7 @@ public class DefaultAuthenticationProviderSecurityConfig extends WebSecurityConf
 				.dataSource(dataSource)
 				.usersByUsernameQuery(USERS_QUERY)
 				.authoritiesByUsernameQuery(ROLES_QUERY);
-		//Note: could use a password encoder but this would mean to hash th password here
+		//Note: could use a password encoder but this would mean to hash the password here
 		//and let it visible when it comes from outside. Not a good idea
 	}
 

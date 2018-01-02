@@ -10,5 +10,5 @@
 ## Available configurations based on Spring profiles:
 - DEFAULT_AUTH_PROVIDER - use the default authentication manager in the DefaultAuthenticationProviderSecurityConfig class
 - CUSTOM_AUTH_PROVIDER - use the custom authentication manager in the CustomAuthenticationProviderSecurityConfig class
-- CUSTOM_SECURITY_FILTER - use a custom securityFilter
-- CUSTOM_BASIC_AUTHENTICATION_ENTRY_POINT - use a BasicAuthenticationFilter with CustomBasicAuthenticationEntryPoint
+- CUSTOM_SECURITY_FILTER - use a custom securityFilter and the application's custom security controller for login, with a custom page
+- IN_MEMORY_AUTH_WITH_SPRING_SEC_CONTROLLER_LOGIN - use an in-memory authentication and the default spring security controller for login, with a custom page
