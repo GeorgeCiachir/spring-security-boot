@@ -7,5 +7,10 @@
 </head>
 <body>
     <h2>This is the application's home Page</h2>
+    <div>
+        <a href="${pageContext.request.contextPath}/security/manualLogin">
+            <button>Go to Login page</button>
+        </a>
+    </div>
 </body>
 </html>

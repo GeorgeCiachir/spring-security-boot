@@ -51,6 +51,8 @@ public class CustomFilterSecurityConfig extends WebSecurityConfigurerAdapter {
 				// No need to explicitly set permitAll() on the login page, as it is already set above, in the allowedUrlPatterns()).permitAll()
 				.formLogin()
 				.loginPage("/security/manualLogin");
+
+		httpSecurity.exceptionHandling().accessDeniedPage("/security/accessDenied");
 	}
 
 	@Autowired

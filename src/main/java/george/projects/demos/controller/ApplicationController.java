@@ -19,8 +19,9 @@ public class ApplicationController {
 
 	@ResponseBody
 	@RequestMapping(value = "/siteAdmin")
-	public String siteAdmin(@RequestParam(value = "name", required = false, defaultValue = "user") String name) {
-		return "Hello " + name + "! You are an authenticated site admin";
+	public ModelAndView siteAdmin(@RequestParam(value = "name", required = false, defaultValue = "user") String name) {
+		return new ModelAndView("siteAdminPage");
+//		return "Hello " + name + "! You are an authenticated site admin";
 	}
 
 	@ResponseBody
