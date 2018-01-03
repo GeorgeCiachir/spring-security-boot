@@ -92,5 +92,7 @@ public class CustomBasicAuthenticationEntryPointSecurityConfig extends WebSecuri
 				// If not specified, the initial requested url will be used for forwarding the request
 //				.successForwardUrl("/description")
 				.permitAll();
+
+		httpSecurity.logout();
 	}
 }
