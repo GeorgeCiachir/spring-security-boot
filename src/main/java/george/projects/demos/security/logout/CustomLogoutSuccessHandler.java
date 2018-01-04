@@ -20,6 +20,8 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 		LOG.info("In CustomLogoutSuccessHandler");
 		LOG.info("Logout : {}", authentication.getName());
 		LOG.info("Logout : {}", authentication.getPrincipal().toString());
+
+		// Need to manually set a redirect url if a particular one is needed. the default is "/"
 		setDefaultTargetUrl("/description");
 		super.onLogoutSuccess(request, response, authentication);
 	}

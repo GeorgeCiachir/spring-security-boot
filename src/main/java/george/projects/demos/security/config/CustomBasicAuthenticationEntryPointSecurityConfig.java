@@ -102,8 +102,10 @@ public class CustomBasicAuthenticationEntryPointSecurityConfig extends WebSecuri
 //				.successForwardUrl("/description")
 				.permitAll();
 
+		// This goes through the default spring security controller logout url mapping
 		httpSecurity.logout();
 
+		// This goes through the application's SecurityController customLogout url mapping
 		httpSecurity
 				.logout()
 				.logoutUrl("/security/customLogout")
