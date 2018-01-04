@@ -15,9 +15,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 import george.projects.demos.configuration.ApplicationSecurityProfile;
+import george.projects.demos.configuration.EnvironmentSettings;
 import george.projects.demos.configuration.webMvc.DefaultSpringLoginSecurityControllerWebConfig;
+import george.projects.demos.security.logout.CustomLogoutSuccessHandler;
 
 /**
  * Configuration using the default Spring security controller for login
@@ -34,6 +37,9 @@ import george.projects.demos.configuration.webMvc.DefaultSpringLoginSecurityCont
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class CustomBasicAuthenticationEntryPointSecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Resource
+	private EnvironmentSettings environmentSettings;
 
 	@Resource
 	private BCryptPasswordEncoder passwordEncoder;
@@ -80,9 +86,12 @@ public class CustomBasicAuthenticationEntryPointSecurityConfig extends WebSecuri
 	public void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
 				.authorizeRequests()
+				.regexMatchers(environmentSettings.allowedUrlPatterns()).permitAll()
+
 				.regexMatchers("/premiumUser/.*").hasRole("SIMPLE_USER")
 //				.regexMatchers("/opsAdmin").access("hasRole('ADMIN_OPS') and authentication.principal.equals('George@company.com')")
 				.regexMatchers("/opsAdmin").access("hasRole('ROLE_ADMIN_OPS')")
+
 				.anyRequest()
 				.authenticated();
 
@@ -94,5 +103,13 @@ public class CustomBasicAuthenticationEntryPointSecurityConfig extends WebSecuri
 				.permitAll();
 
 		httpSecurity.logout();
+
+		httpSecurity
+				.logout()
+				.logoutUrl("/security/customLogout")
+				.logoutSuccessHandler(new CustomLogoutSuccessHandler())
+				.invalidateHttpSession(true) //true by default
+				.addLogoutHandler(new SecurityContextLogoutHandler())
+				.deleteCookies("JSESSIONID");
 	}
 }

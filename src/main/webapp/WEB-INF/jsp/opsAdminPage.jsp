@@ -18,8 +18,8 @@
     </h2>
 
     <div style="display: inline-block">
-        <c:url value="/logout" var="logoutUrl"/>
-        <form:form name="form" action="${logoutUrl}">
+        <c:url value="/logout" var="springLogoutUrl"/>
+        <form:form name="form" action="${springLogoutUrl}">
             <input type="submit" value="Logout using Spring security controller">
         </form:form>
     </div>
@@ -27,9 +27,22 @@
     <hr>
     <hr>
     <hr>
+    <hr>
+
+    <div style="display: inline-block">
+        <c:url value="/security/customLogout" var="customLogoutUrl"/>
+        <form:form name="form" action="${customLogoutUrl}">
+            <input type="submit" value="Custom logout using application security controller">
+        </form:form>
+    </div>
+
+    <hr>
+    <hr>
+    <hr>
+
     <div>
         <a href="${pageContext.request.contextPath}/security/manualLogout">
-            <button>Logout manually using application security controller</button>
+            <button>Manual logout using application security controller</button>
         </a>
     </div>
 </c:if>

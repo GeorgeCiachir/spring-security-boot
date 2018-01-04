@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import george.projects.demos.configuration.ApplicationSecurityProfile;
+import george.projects.demos.security.config.CustomBasicAuthenticationEntryPointSecurityConfig;
 
 @RequestMapping(value = "/security")
 @Controller
@@ -43,9 +44,19 @@ public class SecurityController {
 		}
 	}
 
+	/**
+	 * Performs manual logout and redirects to corresponding page
+	 */
 	@RequestMapping(value = "/manualLogout")
-	public ModelAndView logOut(HttpServletRequest request) throws ServletException {
+	public ModelAndView manualLogout(HttpServletRequest request) throws ServletException {
 		request.logout();
 		return new ModelAndView("homePage");
 	}
+
+	/**
+	 * Performs custom logout - actually it just needs to be declared and no action is required
+	 * This endpoint is used in the {@link CustomBasicAuthenticationEntryPointSecurityConfig} on the logout implementation
+	 */
+	@RequestMapping(value = "/customLogout")
+	public void customLogout() {}
 }
