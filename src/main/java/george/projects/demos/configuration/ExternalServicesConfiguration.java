@@ -18,7 +18,8 @@ public class ExternalServicesConfiguration {
 
 	@Bean
 	public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-		return new JdbcTemplate(dataSource);
+		JdbcTemplate template = new JdbcTemplate(dataSource);
+		return template;
 	}
 
 	//FIXME: Find a better solution for the Tomcat container for the jdbc driver (at the moment it works when using one of the commented lines below)
