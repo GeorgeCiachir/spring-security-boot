@@ -8,7 +8,22 @@
 - CONTAINER_JETTY
 
 ## Available configurations based on Spring profiles:
-- DEFAULT_AUTH_PROVIDER - use the default authentication manager in the DefaultAuthenticationProviderSecurityConfig class
-- CUSTOM_AUTH_PROVIDER - use the custom authentication manager in the CustomAuthenticationProviderSecurityConfig class
-- CUSTOM_SECURITY_FILTER - use a custom securityFilter and the application's custom security controller for login, with a custom page
-- IN_MEMORY_AUTH_WITH_SPRING_SEC_CONTROLLER_LOGIN - use an in-memory authentication and the default spring security controller for login, with a custom page
+- DEFAULT_AUTH_PROVIDER 
+    * use the default authentication manager in the DefaultAuthenticationProviderSecurityConfig class
+    * expects basic auth with the BCryptPasswordEncoder encrypted password value
+    * goes to the database
+    
+- CUSTOM_AUTH_PROVIDER
+    * use the custom authentication manager in the CustomAuthenticationProviderSecurityConfig class
+    * expects basic auth with the BCryptPasswordEncoder encrypted password value
+    * goes to the database
+    
+- CUSTOM_SECURITY_FILTER
+    * use a custom securityFilter and the application's custom security controller for login, with a custom page
+    * expects an "Authorization" header with a custom token as the value -> implementation of the token in CustomSecurityFilter class
+    * if no token is provided the request is redirected to a formLogin (implemented with a custom JSP)
+    * goes to the database
+    
+- IN_MEMORY_AUTH_WITH_SPRING_SEC_CONTROLLER_LOGIN
+    * use an in-memory authentication (DB) and the default spring security controller for login, with a custom JSP
+    * expects the unencrypted value of the password
